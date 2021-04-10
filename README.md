@@ -21,7 +21,7 @@ airflow_poc $ docker-compose up
 * SSH to the Webserver Container (open another tab) & Create User
 ```
 $ docker exec -it airflow_poc_webserver_1 bash
-$ python dags/library_files/create_user.py
+$ python dags/library_files/create_airflow_user.py
 ```
 
 ### UI Links
