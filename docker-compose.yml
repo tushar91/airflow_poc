@@ -23,8 +23,6 @@ services:
             - LOAD_EX=n
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
-        env_file:
-            - .env
         volumes:
             - ./dags:/usr/local/airflow/dags
             - ./queries:/usr/local/airflow/queries
@@ -63,8 +61,6 @@ services:
             - LOAD_EX=n
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
-        env_file:
-            - .env
         command: scheduler
 
     worker:
@@ -82,6 +78,4 @@ services:
         environment:
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
-        env_file:
-            - .env
         command: worker
