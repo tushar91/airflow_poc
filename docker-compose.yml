@@ -1,0 +1,87 @@
+version: '2.1'
+services:
+    redis:
+        image: 'redis:5.0.5'
+        # command: redis-server --requirepass redispass
+
+    postgres:
+        image: postgres:9.6
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+        ports:
+            - 5432:5432
+
+    webserver:
+        image: bi/docker-airflow
+        restart: always
+        depends_on:
+            - postgres
+            - redis
+        environment:
+            - LOAD_EX=n
+            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+            - EXECUTOR=Celery
+        env_file:
+            - .env
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./queries:/usr/local/airflow/queries
+            - ./requirements.txt:/requirements.txt
+            - ./script:/usr/local/airflow/script
+            - ./downloads:/usr/local/airflow/downloads
+            - ./settings:/usr/local/airflow/settings
+        ports:
+            - "8080:8080"
+        command: webserver
+
+    flower:
+        image: bi/docker-airflow
+        restart: always
+        depends_on:
+            - redis
+        environment:
+            - EXECUTOR=Celery
+        ports:
+            - "5555:5555"
+        command: flower
+
+    scheduler:
+        image: bi/docker-airflow
+        restart: always
+        depends_on:
+            - webserver
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./queries:/usr/local/airflow/queries
+            - ./requirements.txt:/requirements.txt
+            - ./script:/usr/local/airflow/script
+            - ./downloads:/usr/local/airflow/downloads
+            - ./settings:/usr/local/airflow/settings
+        environment:
+            - LOAD_EX=n
+            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+            - EXECUTOR=Celery
+        env_file:
+            - .env
+        command: scheduler
+
+    worker:
+        image: bi/docker-airflow
+        restart: always
+        depends_on:
+            - scheduler
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./queries:/usr/local/airflow/queries
+            - ./requirements.txt:/requirements.txt
+            - ./script:/usr/local/airflow/script
+            - ./downloads:/usr/local/airflow/downloads
+            - ./settings:/usr/local/airflow/settings
+        environment:
+            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+            - EXECUTOR=Celery
+        env_file:
+            - .env
+        command: worker
