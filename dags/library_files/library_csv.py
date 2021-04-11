@@ -13,7 +13,7 @@ def download_csv_from_url(csv_url: str, local_filepath: str) -> None:
     :return: None
 
     Note:
-        Modified date: 08-04-2021
+        Modified date: 10-04-2021
         Author: TB
     """
     response = requests.get(csv_url, stream=True)
@@ -39,7 +39,7 @@ def write_rows_to_csv(rows_to_write: list, dest_filepath: str,
     :return: (int) - Number of rows written to CSV
 
     Note:
-        Modified date: 08-04-2021
+        Modified date: 10-04-2021
         Author: TB
     """
     if rows_to_write:

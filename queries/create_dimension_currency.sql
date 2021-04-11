@@ -1,5 +1,6 @@
 #standardSQL
 -- Query to create the final Dimension currency table
+-- To get the last updated one euro value from the table
 WITH history_rank AS (SELECT
   cur_code,
   serial_code,

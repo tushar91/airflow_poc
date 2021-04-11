@@ -18,7 +18,7 @@ def dimension_currency_to_csv(in_filepath: str, out_filepath: str):
     :param out_filepath: (str) - Path of the final CSV
 
     Note:
-        Modified date: 08-04-2021
+        Modified date: 10-04-2021
         Author: TB
     """
     # initialise variables
@@ -75,6 +75,9 @@ def exchange_rate_history_to_csv(in_filepath: str, out_filepath: str):
     :param in_filepath: (str) - Path of the raw CSV file to parse
     :param out_filepath: (str) - Path of the final CSV
 
+    Note:
+        Modified date: 10-04-2021
+        Author: TB
     """
     # initialise variables
     total_rows_written = 0
@@ -108,12 +111,13 @@ def calculate_exchange_rate_history(headers: list, value_row: list) -> list:
     """
     Function to calculate Exchange rate from a row of rates of different
     currencies
+
     :param headers: (list) - List of headers or currency codes
     :param value_row: (list) - List of CSV rows conatining raw data
     :return: (list) - Clean Exchange rate row, which is written to CSV
 
     Note:
-        Modified date: 08-04-2021
+        Modified date: 10-04-2021
         Author: TB
     """
     clean_values = []
@@ -153,7 +157,7 @@ def extract_value_from_brackets(raw_input: str) -> str:
     :return: (str) - Value between brackets
 
     Note:
-        Modified date: 08-04-2021
+        Modified date: 10-04-2021
         Author: TB
     """
     if not raw_input:
