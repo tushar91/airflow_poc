@@ -23,7 +23,7 @@ class FlowToGoogleCloudStorage(BaseOperator):
     - Upload the CSV to GCS
 
     Note:
-        Modified date: 08-04-2021
+        Modified date: 10-04-2021
         Author: TB
     """
     template_fields = ('flow_name', 'raw_data_filepath', 'clean_filepath')
@@ -53,6 +53,7 @@ class FlowToGoogleCloudStorage(BaseOperator):
         1. Prepare data from the Dimension table, clean & store in CSV on local
         2. Upload the CSV to GCS
         """
+        #  depending on the flow name, execute the task
         if self.flow_name == 'dimension_currency':
             # prepare dimension data
             dimension_currency_to_csv(

@@ -77,7 +77,8 @@ create_gcp_connection = PythonOperator(
     op_kwargs={
         "connection_id": "airflow_gcp_connection",
         "gcp_project_name": "airflow-gcp-poc",
-        "gcp_key_path": "settings/<file>.json"
+        "gcp_key_path": "settings/<file>.json"  # update this with
+        # correct file
     },
     provide_context=False,
     dag=dag)

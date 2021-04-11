@@ -3,13 +3,19 @@ from airflow import models, settings
 from airflow.contrib.auth.backends.password_auth import PasswordUser
 
 
-def create_user(username, password, email, is_superuser=True):
+def create_user(username: str, password: str, email: str,
+                is_superuser: bool = True):
     """
     Method to create Airflow user
-    :param username: User name
-    :param password: Password
-    :param email: Email of the user
-    :param is_superuser: Is super user - True/False
+
+    :param username: (str) - Airflow User name
+    :param password: (str) - Airflow Password
+    :param email: (str) - Email of the user
+    :param is_superuser: (str) - Is super user - True/False
+
+    Note:
+        Modified date: 10-04-2021
+        Author: TB
     """
     user = PasswordUser(models.User())
     user.username = username
@@ -25,7 +31,10 @@ def create_user(username, password, email, is_superuser=True):
 def init_user():
     """
     Take input from user & create user
-    :return:
+
+    Note:
+        Modified date: 10-04-2021
+        Author: TB
     """
     username = input("Enter username :")
     password = input("Enter password :")

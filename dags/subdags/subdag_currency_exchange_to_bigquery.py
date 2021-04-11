@@ -41,7 +41,7 @@ def subdag_currency_exchange_to_bigquery(parent_dag_name, child_dag_name,
     :return: None
 
     Note:
-        Modified date: 08-04-2021
+        Modified date: 10-04-2021
         Author: TB
     """
     dag = DAG(
@@ -53,7 +53,7 @@ def subdag_currency_exchange_to_bigquery(parent_dag_name, child_dag_name,
     # create filename
     filename = f"{flow_name}_{execution_date}.csv"
 
-    # extract data from raw csv file & upload to GCS
+    # 1. extract data from raw csv file & upload to GCS
     clean_data_to_gcs = FlowToGoogleCloudStorage(
         task_id="clean_data_to_gcs",
         flow_name=flow_name,
@@ -65,6 +65,7 @@ def subdag_currency_exchange_to_bigquery(parent_dag_name, child_dag_name,
         dag=dag
     )
 
+    # 2. copy file from gcs to bigquery
     gcs_to_bq = GoogleCloudStorageToBigQueryOperator(
         task_id="gcs_to_bq",
         bucket="airflow_poc",
@@ -77,7 +78,7 @@ def subdag_currency_exchange_to_bigquery(parent_dag_name, child_dag_name,
         dag=dag
     )
 
-    # 3. Delete file from GCS
+    # 3. delete file from GCS
     delete_gcs_file = GoogleCloudStorageDeleteOperator(
         task_id="delete_gcs_file",
         bucket_name="airflow_poc",
@@ -91,6 +92,8 @@ def subdag_currency_exchange_to_bigquery(parent_dag_name, child_dag_name,
     if bigquery_table_path and final_bigquery_table:
         with open(bigquery_table_path, "r") as q:
             data_query = q.read()
+
+        # create table in bigquery using SQL query
         create_bigquery_table = BigQueryOperator(
             task_id=f"create_bigquery_table",
             sql=data_query,
